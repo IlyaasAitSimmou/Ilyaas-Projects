@@ -1,0 +1,4 @@
+Imported libraries:
+
+1. matplotlib
+- matplotlib is used in project.py to plot the aqcuired trajectory function graphically
