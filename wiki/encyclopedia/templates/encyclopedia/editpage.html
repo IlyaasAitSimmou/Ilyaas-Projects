@@ -1,0 +1,16 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Add Page
+{% endblock %}
+
+{% block body %}
+
+    <form action="{% url 'wiki:savepage' edit_page %}" method="POST" class="add">
+        {% csrf_token %}
+        {{ form2 }}
+        <input id = "add" type="submit" value="Save">
+        <!-- <input class="search" type="text" name="q" placeholder="Search Encyclopedia"> -->
+    </form>
+
+{% endblock %}
