@@ -1,0 +1,32 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Active Listings</h2>
+
+    <ul>
+        <li>
+            {% for auction in auctions %}
+                {% if auction.Activity %}
+                    <div>
+                        <a href="{% url 'listing' auction.listing %}">
+                            <img src="{{auction.imageUrl}}" alt="{{auction.listing}}">
+                            <h3>
+                                {{ auction.listing }}
+                            </h3>
+                        </a>
+
+                        <h4>
+                            {% if Auction.objects.all.first.bids.first%}
+                                {% load humanize %}
+                                Price: ${{ auction.bids.current_bid|intcomma }}
+                            {% else %}
+                                {% load humanize %}
+                                Price: ${{ auction.price|intcomma }}
+                            {% endif %}
+                        </h4>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>{{auction.listing}}</h2>
+    <img src="{{auction.imageUrl}}" alt="{{auction.listing}}">
+    <h4>
+        {% if auction.bids.first %}
+            {% load humanize %}
+            Price: ${{ auction.bids.first.current_bid|intcomma }}
+        {% else %}
+            {% load humanize %}
+            Price: ${{ auction.price|intcomma }}
+        {% endif %}
+    </h4>
+    <h4> Description </h4>
+    <p>{{auction.description}}</p>
+
+    {% if not is_auction_lister %}
+        <form action="/place_bid/{{auction.listing}}" method="post">
+            {% csrf_token %}
+            {{ place_bid }}
+            <input type="submit" value="Place Bid">
+        </form>
+        <form action="/add_to_watchlist/{{auction.listing}}" method="post">
+            {% csrf_token %}
+            <input type="submit" value="Add to Watchlist">
+        </form>
+    {% else %}
+        <form action="/close_auction/{{auction.listing}}" method="post">
+            {% csrf_token %}
+            <input type="submit" value="Close Auction">
+        </form>
+    {% endif %}
+
+    <h4>
+        Details
+    </h4>
+
+    <ul>
+        <li>listed by {{auction.Category}}</li>
+        <li>listed by {{auction.auction_lister}}</li>
+    </ul>
+    {% if user.is_authenticated %}
+        <form action="/comment/{{Comment_Listing}}" method="post">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" value="Submit">
+        </form>
+    {% endif %}
+    <h4>
+        Comments
+    </h4>
+    {% for Comment in Comments %}
+        <p>{{ Comment.text }}</p>
+        <h6> By {{Comment.commentor}} </h6>
+    {% endfor %}
+{% endblock %}
