@@ -1,0 +1,36 @@
+{% extends "network/layout.html" %}
+
+{% block script %}
+    <script src="http://127.0.0.1:8000/static/network/profile.js"></script>
+    <script src="http://127.0.0.1:8000/static/network/app.js"></script>
+{% endblock %}
+
+{% block body %}
+    <h2>Profile</h2>
+    <h4 class="username" id="{{ person.username }}">{{ person.username }}</h4>
+    <h6 id="FollowerCount">Followers: {{ person.Followers.count }}</h6>
+    {% if request.user != person %}
+        <button id="follow_button", value="{{user.username}}"> follow </button>
+    {% endif %}
+
+    <div id="allPosts">
+        {% for postlist in postpages %}
+            <div id="{{forloop.counter}}" class="postSet" style="display: none;">
+                {% for post in postlist %}
+                    <div id="{{post.id}}">
+                        <a href="/profile/{{ post.poster.username }}"><h5> {{ post.poster }} </h5></a>
+                        <p> {{ post.text }} </p>
+                        <p> {{ post.date }} </p>
+                        <h6 class="like_button" id="like_button{{post.id}}"> ❤️ {{ post.likes.count }}</h6>
+                        <!-- <form action="/addlike/{{post.id}}" method="post">
+                            {% csrf_token %}
+                            <input type="submit" value='❤️ {{ post.likes.count }}' class="like_button" id="like_button{{post.id}}"></input>
+                        </form> -->
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+        <button id="previous_page">Prev</button>
+        <button id="next_page">Next</button>
+    </div>
+{% endblock %}
